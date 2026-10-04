@@ -1,0 +1,31 @@
+import spacy
+from spacy import displacy
+
+nlp = spacy.load("en_core_web_sm")
+
+sentence = "The quick brown fox jumps over the lazy dog."
+doc = nlp(sentence)
+
+print("Token\tHead\tPOS\tDependency")
+
+for token in doc:
+    print(
+        f"{token.text}\t{token.head.text}\t"
+        f"{token.pos_}\t{token.dep_}"
+    )
+
+displacy.serve(doc, style="dep")
+
+
+OUTPUT:
+Token   Head    POS     Dependency
+The     fox     DET     det
+quick   fox     ADJ     amod
+brown   fox     ADJ     amod
+fox     jumps   NOUN    nsubj
+jumps   jumps   VERB    ROOT
+over    jumps   ADP     prep
+the     dog     DET     det
+lazy    dog     ADJ     amod
+dog     over    NOUN    pobj
+.       jumps   PUNCT   punct
