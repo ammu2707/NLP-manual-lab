@@ -1,0 +1,38 @@
+import nltk
+from nltk.tag import hmm
+from nltk.corpus import treebank
+
+nltk.download('treebank')
+nltk.download('universal_tagset')
+
+train_data = treebank.tagged_sents(
+    tagset='universal'
+)[:3000]
+
+test_data = treebank.tagged_sents(
+    tagset='universal'
+)[3000:]
+
+trainer = hmm.HiddenMarkovModelTrainer()
+hmm_tagger = trainer.train(train_data)
+
+accuracy = hmm_tagger.evaluate(test_data)
+print(f"HMM Tagger Accuracy: {accuracy:.4f}")
+
+sentence = "The quick brown fox jumps over the lazy dog".split()
+
+print("Tagged Sentence:")
+print(hmm_tagger.tag(sentence))
+
+
+OUTPUT:
+Tagged Sentence:
+[('The', 'DET'),
+ ('quick', 'ADJ'),
+ ('brown', 'ADJ'),
+ ('fox', 'NOUN'),
+ ('jumps', 'VERB'),
+ ('over', 'ADP'),
+ ('the', 'DET'),
+ ('lazy', 'ADJ'),
+ ('dog', 'NOUN')]
