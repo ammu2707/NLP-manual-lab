@@ -1,0 +1,71 @@
+import nltk
+from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+def text_processing(text):
+    tokens = word_tokenize(text)
+    sentences = sent_tokenize(text)
+
+    stop_words = set(stopwords.words("english"))
+    filtered_tokens = [
+        token for token in tokens
+        if token.lower() not in stop_words
+    ]
+
+    stemmer = PorterStemmer()
+    stemmed_tokens = [
+        stemmer.stem(token) for token in filtered_tokens
+    ]
+
+    lemmatizer = WordNetLemmatizer()
+    lemmatized_tokens = [
+        lemmatizer.lemmatize(token)
+        for token in filtered_tokens
+    ]
+
+    return tokens, sentences, filtered_tokens, stemmed_tokens, lemmatized_tokens
+
+text = "This is an example sentence. It demonstrates basic text processing operations."
+
+tokens, sentences, filtered_tokens, stemmed_tokens, lemmatized_tokens = text_processing(text)
+
+print("Original Text:")
+print(text)
+print("\nTokens:")
+print(tokens)
+print("\nSentences:")
+print(sentences)
+print("\nFiltered Tokens:")
+print(filtered_tokens)
+print("\nStemmed Tokens:")
+print(stemmed_tokens)
+print("\nLemmatized Tokens:")
+print(lemmatized_tokens)
+
+Original Text:
+This is an example sentence. It demonstrates basic text processing operations.
+
+Tokens:
+['This', 'is', 'an', 'example', 'sentence', '.', 'It',
+'demonstrates', 'basic', 'text', 'processing', 'operations', '.']
+
+Sentences:
+['This is an example sentence.',
+'It demonstrates basic text processing operations.']
+
+Filtered Tokens:
+['This', 'example', 'sentence', '.', 'It', 'demonstrates',
+'basic', 'text', 'processing', 'operations', '.']
+
+Stemmed Tokens:
+['thi', 'exampl', 'sentenc', '.', 'It', 'demonstr',
+'basic', 'text', 'process', 'oper', '.']
+
+Lemmatized Tokens:
+['This', 'example', 'sentence', '.', 'It', 'demonstrates',
+'basic', 'text', 'processing', 'operation', '.']
