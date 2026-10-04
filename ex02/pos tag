@@ -1,0 +1,48 @@
+import nltk
+from nltk import word_tokenize, pos_tag, ne_chunk
+from nltk.tree import Tree
+
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('maxent_ne_chunker')
+nltk.download('words')
+
+text = "Barack Obama was the 44th President of the United States. He was born in Hawaii."
+
+tokens = word_tokenize(text)
+
+pos_tags = pos_tag(tokens)
+
+print("POS Tagging Result:")
+print(pos_tags)
+
+ner_tree = ne_chunk(pos_tags)
+
+print("\nNamed Entity Recognition Result:")
+print(ner_tree)
+
+named_entities = []
+
+for subtree in ner_tree:
+    if isinstance(subtree, Tree):
+        entity_name = " ".join(
+            [token for token, pos in subtree.leaves()]
+        )
+        entity_type = subtree.label()
+        named_entities.append((entity_name, entity_type))
+
+print("\nExtracted Named Entities:")
+print(named_entities)
+
+POS Tagging Result:
+[('Barack', 'NNP'), ('Obama', 'NNP'),
+('was', 'VBD'), ('the', 'DT'), ('44th', 'JJ'),
+('President', 'NNP'), ('of', 'IN'), ('the', 'DT'),
+('United', 'NNP'), ('States', 'NNPS'), ('.', '.'),
+('He', 'PRP'), ('was', 'VBD'), ('born', 'VBN'),
+('in', 'IN'), ('Hawaii', 'NNP'), ('.', '.')]
+
+Extracted Named Entities:
+[('Barack Obama', 'PERSON'),
+('President United States', 'ORGANIZATION'),
+('Hawaii', 'GPE')]
